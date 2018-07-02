@@ -44,8 +44,8 @@ function copyCode() {
 </head>
 <?php
 $hostname = 'localhost';
-$username = 'root';
-$password = '';
+$username = 'mabi_sn_share_ptrs';
+$password = 'mabi_sn_share_pass';
 $db_name="mabi";
 
 
