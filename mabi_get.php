@@ -2,9 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>序號搜尋</title>
+<title>取得序號</title>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+function selectEvent() {
+	$("#selected_div").css('visibility', 'hidden');
+	$("#getCode_button").css('visibility', 'hidden');
+	$("#copyCode_button").css('visibility', 'hidden');
+	$("#code_section").css('visibility', 'hidden');	
+	$("#evtForm").submit();
+}
 function getItem(item) {
 	$("#selected_div").css('visibility', 'visible');
 	$("#getCode_button").css('visibility', 'visible');
@@ -43,18 +50,7 @@ function copyCode() {
 </script>
 </head>
 <?php
-$hostname = 'localhost';
-$username = 'mabi_sn_share_ptrs';
-$password = 'mabi_sn_share_pass';
-$db_name="mabi";
-
-
-$db=new PDO("mysql:host=".$hostname.";
-			dbname=".$db_name, $username, $password,
-			array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8';"));
-$db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-$db->query("SET NAMES utf8");
-   
+require_once('mabi_connect.php');   
 
 //$SQL_item_list = "SELECT serial_number, event_name, item_name, sn_id, used FROM sn_share WHERE event_name=:event_name";
 $SQL_item_list = "SELECT DISTINCT item_name FROM sn_share WHERE event_name=:event_name and used=0 ORDER BY item_name";
@@ -80,8 +76,10 @@ $PRE_item_list->execute(array(':event_name' => $cur_event_name));
 $DAT_item_list = $PRE_item_list->fetchAll();
 ?>
 <body>
-<form method="post" name="evtForm">
-<select name='event_name' onChange='evtForm.submit();'>
+移至頁面： <a href="mabi_post.php">添加序號</a><br /><br />
+<div style="font-weight: bold;">取得序號</div>
+<form method="post" id="evtForm" name="evtForm">
+活動： <select name='event_name' onChange='selectEvent()'>
 <?php
 foreach ($DAT_event_list as $datainfo)
 {
@@ -99,7 +97,8 @@ foreach ($DAT_event_list as $datainfo)
 </form>
 <?php
 ?>
-<div style="background-color:#00FFFF;width:300px;height:500px;overflow-y:scroll;float:left;border:2px green solid;">
+物品清單：<br />
+<div style="background-color:#00FFFF;width:400px;height:400px;overflow-y:scroll;float:left;border:2px green solid;">
 <?php
 foreach ($DAT_item_list as $datainfo) {
 	echo "<a href='#' onclick='getItem(\"".$datainfo['item_name']."\")'>". $datainfo['item_name'] . "</a><br/>";
