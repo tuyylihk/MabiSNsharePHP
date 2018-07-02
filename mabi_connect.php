@@ -1,7 +1,7 @@
 <?php
 $hostname = 'localhost';
-$username = 'mabi_sn_share_ptrs';
-$password = 'mabi_sn_share_ptrs';
+$username = 'root';
+$password = '';
 $db_name="mabi";
 
 $db=new PDO("mysql:host=".$hostname.";

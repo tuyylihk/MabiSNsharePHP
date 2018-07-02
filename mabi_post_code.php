@@ -1,26 +1,30 @@
 <?php
 require_once('mabi_connect.php');
 
-if (isset($_REQUEST['item_name']) && isset($_REQUEST['event_name'])) {
-	$item_name = $_REQUEST['item_name'];
-	$event_name = $_REQUEST['event_name'];
+if (isset($_REQUEST['item_txt_all'])) {
+	$item_txt_all = $_REQUEST['item_txt_all'];
 }
 else {
 	echo "!!!!";
 	exit;
 }
 
-$SQL_code = "SELECT serial_number, min(sn_id) as snid FROM sn_share WHERE event_name=:event_name AND item_name=:item_name AND used=0";
-$PRE_code = $db->prepare($SQL_code, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-$PRE_code->execute(array(':event_name' => $event_name, ':item_name' => $item_name));
-$DAT_code = $PRE_code->fetch();
-
-
-if ($DAT_code && isset($DAT_code['serial_number'])){
-	$SQL_code_used = "UPDATE sn_share SET used=1 WHERE sn_id=:sn_id";
+$success_count=0;
+$line_arr = explode(";",$item_txt_all);
+foreach ($line_arr as $line) {
+	if (trim($line)=="") break;
+    $txt_arr = explode("|",$line);
+	$event_name=trim($txt_arr[0]);
+	$item_name=trim($txt_arr[1]);
+	$code=trim($txt_arr[2]);
+	
+	$SQL_code_used = "INSERT INTO sn_share (serial_number, event_name, item_name) VALUES (:code, :event_name, :item_name)";
 	$PRE_code_used = $db->prepare($SQL_code_used, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-	$PRE_code_used->execute(array(':sn_id' => $DAT_code['snid']));
-	echo $DAT_code['serial_number'];
+	$PRE_code_used->execute(array(':code' => $code, ':event_name' => $event_name, ':item_name' => $item_name));
+	
+	$success_count += $PRE_code_used->rowCount();
 }
-else echo "!!!!";
+
+echo "成功添加序號共".$success_count."條<br/>";
+require_once('mabi_post.php');
 ?>

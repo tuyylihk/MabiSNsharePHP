@@ -28,7 +28,7 @@ background-color:#FFFF77;
 移至頁面： <a href="mabi_get.php">取得序號</a><br /><br />
 <div style="font-weight: bold;">添加序號</div>
 請確認內容然後按送出
-<form style="width:900px;" method="post" name="evtForm" action="mabi_post_add.php">
+<form style="width:900px;" method="post" name="evtForm" action="mabi_post_code.php">
 <input type="button" value="回上頁" onclick="history.go(-1)" />　<input type="submit" value="送出"> <br/>
 <div class="table_div table_div_head" style="">活動名稱</div>
 <div class="table_div table_div_head" style="">道具名稱</div>
@@ -37,10 +37,14 @@ background-color:#FFFF77;
 $item_txt_all="";
 $line_arr = explode("\n",$_REQUEST['item_text']);
 foreach ($line_arr as $line) {
+	if (trim($line)=="") break;
     $txt_arr = explode("\t",$line);
 	$event_name=trim($txt_arr[0]);
+	if (trim($event_name)=="") break;
 	$item_name=trim($txt_arr[1]);
+	if (trim($item_name)=="") break;
 	$code=trim($txt_arr[2]);
+	if (trim($code)=="") break;
 	echo "<div class=\"table_div table_div_list\">".$event_name."</div>";
 	echo "<div class=\"table_div table_div_list\">".$item_name."</div>";
 	echo "<div class=\"table_div table_div_list\">".$code."</div>";
