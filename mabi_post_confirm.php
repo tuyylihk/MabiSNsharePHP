@@ -37,7 +37,7 @@ background-color:#FFFF77;
 $item_txt_all="";
 $line_arr = explode("\n",$_REQUEST['item_text']);
 foreach ($line_arr as $line) {
-	if (trim($line)=="") break;
+	if (trim($line)=="") continue;
     $txt_arr = explode("\t",$line);
 	$event_name=trim($txt_arr[0]);
 	if (trim($event_name)=="") break;

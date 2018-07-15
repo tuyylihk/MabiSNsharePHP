@@ -12,7 +12,7 @@ else {
 $success_count=0;
 $line_arr = explode(";",$item_txt_all);
 foreach ($line_arr as $line) {
-	if (trim($line)=="") break;
+	if (trim($line)=="") continue;
     $txt_arr = explode("|",$line);
 	$event_name=trim($txt_arr[0]);
 	$item_name=trim($txt_arr[1]);
