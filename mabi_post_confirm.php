@@ -9,7 +9,7 @@
 <style>
 .table_div{
 width:280px;
-float:left;
+display: table-cell;
 border-style:solid;
 border-width:2px;
 }
@@ -28,11 +28,14 @@ background-color:#FFFF77;
 移至頁面： <a href="mabi_get.php">取得序號</a><br /><br />
 <div style="font-weight: bold;">添加序號</div>
 請確認內容然後按送出
-<form style="width:900px;" method="post" name="evtForm" action="mabi_post_code.php">
+<form method="post" name="evtForm" action="mabi_post_code.php">
 <input type="button" value="回上頁" onclick="history.go(-1)" />　<input type="submit" value="送出"> <br/>
+<div style="width:900px;">
+<div>
 <div class="table_div table_div_head" style="">活動名稱</div>
 <div class="table_div table_div_head" style="">道具名稱</div>
 <div class="table_div table_div_head" style="">序號</div>
+</div>
 <?php 
 $item_txt_all="";
 $line_arr = explode("\n",$_REQUEST['item_text']);
@@ -45,14 +48,16 @@ foreach ($line_arr as $line) {
 	if (trim($item_name)=="") break;
 	$code=trim($txt_arr[2]);
 	if (trim($code)=="") break;
+	echo "<div style=\"display: table-row;\">";
 	echo "<div class=\"table_div table_div_list\">".$event_name."</div>";
 	echo "<div class=\"table_div table_div_list\">".$item_name."</div>";
 	echo "<div class=\"table_div table_div_list\">".$code."</div>";
-	echo "<br />";
+	echo "</div>";
 	$item_txt_all .= $event_name."|".$item_name."|".$code.";";
 }
  ?>
 <input type="hidden" name="item_txt_all" value="<?php echo $item_txt_all; ?>" />
+</div>
 </form>
 </body>
 </html>
